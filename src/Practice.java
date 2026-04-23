@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class Practice {
     if(starting == null) return 0;
     return oddVertices(starting, new HashSet<>());
   }
-  
+
   private static int oddVertices(Vertex<Integer> starting, Set<Vertex<Integer>> visited){
     if(visited.contains(starting)) return 0;
     visited.add(starting);
@@ -65,8 +67,29 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by 
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    return null;
+    if(starting == null) return new ArrayList<>();
+    ArrayList<Integer> list = new ArrayList<>();
+    sortedReachable(starting, list, new HashSet<>());
+    Collections.sort(list);
+    return list;
   }
+  
+  private static void sortedReachable(Vertex<Integer> starting, List<Integer> sorted, Set<Vertex<Integer>> visited){
+    if(visited.contains(starting)) return;
+    visited.add(starting);
+    
+    if (starting.data != null) {
+      sorted.add(starting.data);
+    }
+    
+    for(Vertex<Integer> neighbor: starting.neighbors){
+      sortedReachable(neighbor, sorted, visited);
+    }
+  }
+  //void helper method
+  // iterate through our vertexs,
+  // add(value)
+  // return collections.sort( list)
 
   /**
    * Returns a sorted list of all values reachable from the given starting vertex in the provided graph.
