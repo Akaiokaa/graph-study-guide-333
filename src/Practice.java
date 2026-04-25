@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 public class Practice {
@@ -73,7 +75,7 @@ public class Practice {
     Collections.sort(list);
     return list;
   }
-  
+
   private static void sortedReachable(Vertex<Integer> starting, List<Integer> sorted, Set<Vertex<Integer>> visited){
     if(visited.contains(starting)) return;
     visited.add(starting);
@@ -220,6 +222,86 @@ public class Practice {
    * @return an unsorted list of next moves
    */
   public static List<int[]> nextMoves(char[][] board, int[] current, int[][] directions) {
-    return null;
+    int row = current[0];
+    int col = current[1];
+
+    if (board == null) { return new ArrayList<>();}
+    List<int[]> nextMoves = new ArrayList<>();
+    boolean[][] boolBoard = new boolean[board.length][board[0].length];
+
+    bfs(board, boolBoard, row, col, directions, nextMoves);
+
+    return nextMoves;
   }
+  public static void bfs(char[][] board, boolean[][] boolBoard, int row, int col, int[][] directions, List<int[]> list ){
+    Queue<int[]> queue = new LinkedList<>();
+    queue.add(new int[] {row, col});
+    boolBoard[row][col] = true;
+
+    int count = 0;
+    while (!queue.isEmpty()) {
+      int[] current = queue.poll();
+      int curR = current[0];
+      int curC = current[1];
+
+      for(int[] direction: directions){
+        int newR = curR + direction[0];
+        int newC = curC + direction[1];
+        /*
+        * directions:
+   * {
+   *  {0, 1},  // Right
+   *  {-1, 0}, // Up
+   *  {1, 0},  // Down
+   *  {1, -1}  // Down/left diagonal
+   * }
+         */
+        if (newR >= 0 &&
+          newC >=0 && 
+          newR < board.length && 
+          newC < board[0].length && 
+          !boolBoard[newR][newC] && 
+          board[newR][newC] != 'X'
+          && count < directions.length
+        ) {
+          queue.add(new int[] {newR, newC});
+          list.add(new int[] {newR, newC});
+          boolBoard[newR][newC] = true;
+          
+        }
+        count++;
+        
+      }
+    }
+    
+  }
+  /*
+    boolean bolboard [][]
+    int row = l
+    int col = c
+
+    for rows
+      for colums
+        bfs([rows, cols], direcions)
+
+    
+    bfs void
+      list 
+      create q
+      q.add(current row col [])
+      board[row][col] = true;
+
+      loop throught the q
+        poll
+
+        for each direciton
+          int newR = row + direciton[0]
+          int newC = col + directio[1]
+
+          if(isvalid and not currently marked)
+          q.add(newR newC)
+          list.add(newR newC)
+
+    
+    */
 }
