@@ -110,7 +110,7 @@ public class Practice {
     Collections.sort(list);
     return list;
   }
-  
+
   private static void sortedReachable(List<Integer> list, Map<Integer, Set<Integer>> graph, int starting, Set<Integer> set){
     if(set.contains(starting)) return;
     set.add(starting);
@@ -135,6 +135,22 @@ public class Practice {
    * @return true if there is a two-way connection between v1 and v2, false otherwise
    */
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+    if(v1 == null || v2 == null) return false;
+    if (v1 == v2) { return true;}
+    return canReachV1(v1, v2, new HashSet<>());
+  }
+  
+  public static <T> boolean canReachV1(Vertex<T> v1, Vertex<T> v2, Set<Vertex<T>> visited){
+    if(visited.contains(v1)) return false;
+    if(v1 == v2) return true; 
+    visited.add(v1);
+
+    for(Vertex<T> neighbor : v1.neighbors){
+      if(canReachV1(neighbor, v2, visited)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
