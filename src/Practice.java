@@ -144,7 +144,7 @@ public class Practice {
     if(firstVertex == null) return false;
     if(visited.contains(firstVertex)) return false;
     if(firstVertex == secondVertex) return true; 
-    
+
     visited.add(firstVertex);
 
     for(Vertex<T> neighbor : firstVertex.neighbors){
@@ -169,6 +169,21 @@ public class Practice {
    * @return whether there exists a valid positive path from starting to ending
    */
   public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
+    if(starting < 0 || ending < 0 || !graph.containsKey(starting) || !graph.containsKey(ending)) return false;
+    return positivePathExists(graph, starting, ending, new HashSet<>());
+  }
+
+  public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending, Set<Integer> visited) {
+    if (visited.contains(starting) || starting < 0) return false;
+    visited.add(starting);
+    if(starting == ending) return true;
+
+    for(Integer current: graph.get(starting)){
+      if(positivePathExists(graph, current, ending, visited)){
+        return true;
+      }
+    }
+
     return false;
   }
 
