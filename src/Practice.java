@@ -137,16 +137,18 @@ public class Practice {
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
     if(v1 == null || v2 == null) return false;
     if (v1 == v2) { return true;}
-    return canReachV1(v1, v2, new HashSet<>());
+    return canReachV1(v1, v2, new HashSet<>()) && canReachV1(v2, v1, new HashSet<>());
   }
-  
-  public static <T> boolean canReachV1(Vertex<T> v1, Vertex<T> v2, Set<Vertex<T>> visited){
-    if(visited.contains(v1)) return false;
-    if(v1 == v2) return true; 
-    visited.add(v1);
 
-    for(Vertex<T> neighbor : v1.neighbors){
-      if(canReachV1(neighbor, v2, visited)) {
+  public static <T> boolean canReachV1(Vertex<T> firstVertex, Vertex<T> secondVertex, Set<Vertex<T>> visited){
+    if(firstVertex == null) return false;
+    if(visited.contains(firstVertex)) return false;
+    if(firstVertex == secondVertex) return true; 
+    
+    visited.add(firstVertex);
+
+    for(Vertex<T> neighbor : firstVertex.neighbors){
+      if(canReachV1(neighbor, secondVertex, visited)) {
         return true;
       }
     }
